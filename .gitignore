@@ -1,0 +1,19 @@
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+phpunit.xml
+.phpunit.result.cache
+vendor/
+
+# Local configuration
+# Note: Users should not commit their config.ini with API keys
+# This is typically in /etc/icingaweb2/modules/askai/config.ini anyway
