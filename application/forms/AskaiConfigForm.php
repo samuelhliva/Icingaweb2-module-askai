@@ -53,13 +53,24 @@ class AskaiConfigForm extends ConfigForm
             'description'     => $this->translate('Select the AI model to use for troubleshooting. There are pre-defined free models provided by the OpenRouter.'),
             'required'        => true,
             'multiOptions'    => [
-                'deepseek/deepseek-chat-v3.1:free'  => 'DeepSeek Chat v3.1',
-                'x-ai/grok-4-fast:free'             => 'X/Grok 4 Fast',
+                'x-ai/grok-4.1-fast:free'           => 'X/Grok 4.1 Fast',
                 'openai/gpt-oss-20b:free'           => 'OpenAI/GPT-OSS 20b',
-                'meta-llama/llama-4-maverick:free'  => 'Meta/Llama 4 Maverick'
+                'tngtech/tng-r1t-chimera:free'      => 'TNG/R1T Chimera',
+                'custom'                            => 'Custom Model'
             ],
-            'multiple'        => false
+            'multiple'        => false,
+            'autosubmit'      => true
         ]);
+
+        $customModelEnabled = isset($formData['ai_model']) && $formData['ai_model'] == 'custom';
+
+        if ($customModelEnabled) {
+            $this->addElement('text', 'ai_custom_model', [
+                'label'         => $this->translate('Custom Model'),
+                'description'   => $this->translate('Enter the custom model'),
+                'required'      => true
+            ]);
+        }
 
         $this->addElement('checkbox', 'ai_custom_instructions', [
             'label'         => $this->translate('Enable Custom Instructions'),

@@ -66,6 +66,10 @@ class IndexController extends Controller
             throw new \Exception('AI Model is not configured. Please setup in the module configuration.');
         }
 
+        if ($this->model === 'custom') {
+            $this->model = $this->config->get('custom_model');
+        }
+
         // Pass interface's tabs to the View model
         $this->view->tabs = $this->getTabs()->add('askai', [
             'title' => $this->translate('Ask AI'),
