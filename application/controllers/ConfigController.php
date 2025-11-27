@@ -6,20 +6,17 @@ namespace Icinga\Module\Askai\Controllers;
 use Icinga\Module\Askai\Forms\AskaiConfigForm;
 
 use Icinga\Application\Config;
-use Icinga\Web\Widget\Tab;
-use Icinga\Web\Widget\Tabs;
-use Icinga\Web\Notification;
 use Icinga\Web\Controller;
 
 class ConfigController extends Controller
 {
-    public function init()
+    public function init(): void
     {
         $this->assertPermission('askai/config');
         parent::init();
     }
 
-    public function indexAction()
+    public function indexAction(): void
     {
         $form = (new AskaiConfigForm())
             ->setIniConfig(Config::module('askai'));
