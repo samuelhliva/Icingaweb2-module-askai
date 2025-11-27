@@ -6,7 +6,7 @@ namespace Icinga\Module\Askai\Controllers;
 use Icinga\Web\Controller;
 use Icinga\Application\Config;
 use Icinga\Data\ConfigObject;
-use Icinga\Web\Url;
+use Icinga\Web\Session;
 
 class IndexController extends Controller
 {
@@ -31,7 +31,7 @@ class IndexController extends Controller
     /** @var int Sets the HTTP request timeout */
     protected $timeout = 60;
 
-    public function init()
+    public function init(): void
     {
         $this->assertPermission('askai/index');
         // Load the configuration file
@@ -78,17 +78,53 @@ class IndexController extends Controller
         ])->activate('askai');
     }
 
-    public function showAction()
+    public function showAction(): void
     {
-        // Extract the variables sent to LLM from the URL parameters
-        $service = $this->params->get('service');
-        $state   = $this->params->get('state');
-        $output  = $this->params->get('output');
+        // Prefer tokenized payload passed via session to avoid long/sensitive query strings
+        $payload = null;
+        $token = $this->params->get('token');
+        
+        if (! $token) {
+            throw new \Exception(
+                'This page cannot be accessed directly. Please use the "Troubleshoot with AI" action from a host or service details page. (Token not found)'
+            );
+        }
+
+        $session = Session::getSession()->getNamespace('askai');
+        $payloads = $session->get('payloads', []);
+
+        if (isset($payloads[$token])) {
+            $entry = $payloads[$token];
+            // Remove expired entries
+            if (! empty($entry['exp']) && $entry['exp'] < time()) {
+                unset($payloads[$token]);
+            } else {
+                $payload = $entry['data'] ?? null;
+                // One-time use: drop immediately for safety
+                unset($payloads[$token]);
+            }
+        } else {
+            throw new \Exception(
+                'Failed to retrieve the payload information. Please, reload the Host/Service tab and try again.'
+            );
+        }
+        
+        // Opportunistic cleanup of any other expired payloads
+        foreach ($payloads as $k => $v) {
+            if (! empty($v['exp']) && $v['exp'] < time()) {
+                unset($payloads[$k]);
+            }
+        }
+        
+        // Save cleaned payloads back to session
+        $session->set('payloads', $payloads);
+
+        // Set parameters directly from payload
+        $this->parameters = $payload;
 
         // Pre-craft the AI prompt
-        $prompt = "Service: $service\n" . 
-        "Service State: $state (0 - OK, 1 - Warning, 2 - Critical, 3 - Unknown)\n" . 
-        "Output: $output";        
+        $prompt = "Troubleshoot the issue based on the provided information below: \n" . 
+        json_encode($payload);
 
         // Execute the function to get the AI response
         $response = $this->sendToAi($prompt);
@@ -101,7 +137,7 @@ class IndexController extends Controller
         $this->view->response       = $response;
     }
 
-    private function sendToAi($prompt)
+    private function sendToAi(string $prompt): string
     {
         // HTTP Data Payload
         $data = [
@@ -144,7 +180,7 @@ class IndexController extends Controller
         return $json['choices'][0]['message']['content'] ?? "No AI response";
     }
 
-    private function getConfig()
+    private function getConfig(): mixed
     {
         $moduleConfig = Config::module('askai');
 
@@ -155,7 +191,7 @@ class IndexController extends Controller
         return null;
     }
 
-    private function getDefaultInstructions()
+    private function getDefaultInstructions(): string
     {
         return "You are an expert Icinga monitoring troubleshooting assistant with deep knowledge of distributed monitoring architectures, service checks, and infrastructure diagnostics.
 
