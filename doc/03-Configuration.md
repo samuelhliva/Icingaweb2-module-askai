@@ -39,9 +39,9 @@ OpenRouter provides free access to multiple AI models. To get started:
 5. Copy the API key (you'll need this for configuration)
 
 **Free Models Available:**
-- DeepSeek Chat v3.1
+- X/Grok 4.1 Fast
 - OpenAI/GPT-OSS 20b
-- Meta/Llama 4 Maverick
+- TNG/R1T Chimera
 
 ### Other ChatGPT-Compatible APIs
 
@@ -56,7 +56,6 @@ The module supports any ChatGPT-compatible API endpoint that accepts the followi
   ]
 }
 ```
-However a support for custom model selection is missing, but planned.
 
 ### Payload customization
 If your AI provider expects different payload, it can be customized in [Index Controller](../application/controllers/IndexController.php). The payload can be found in the `sendToAi($prompt)` function. 
@@ -142,13 +141,18 @@ Select which AI model to use for generating troubleshooting suggestions.
 
 | Model | Description | Best For |
 |-------|-------------|----------|
-| `deepseek/deepseek-chat-v3.1:free` | DeepSeek Chat v3.1 | General troubleshooting, fast responses |
-| `openai/gpt-oss-20b:free` | OpenAI/GPT-OSS 20b | Detailed explanations, complex issues |
-| `meta-llama/llama-4-maverick:free` | Meta/Llama 4 Maverick | Balanced performance |
+| `x-ai/grok-4.1-fast:free` | X/Grok 4.1 Fast | Fast, real-time troubleshooting with minimal latency |
+| `openai/gpt-oss-20b:free` | OpenAI/GPT-OSS 20b | Detailed, thorough analysis and complex scenarios |
+| `tngtech/tng-r1t-chimera:free` | TNG/R1T Chimera | Balanced performance for general troubleshooting |
+
 
 **Choosing a Model:**
-- **For most users:** Start with DeepSeek Chat v3.1 (good balance of speed and quality)
+- **For most users:** Start with X/Grok 4.1 Fast (good balance of speed and quality)
 - **For detailed analysis:** Use OpenAI/GPT-OSS 20b
+- **For cost-conscious environments:** Use TNG/R1T Chimera
+
+**Custom Model**
+A new feature has been introduced: choosing your own model. In order to choose one, choose the last option in the list: `Custom Model`. A new text input will be revealed where the name of a model is expected.
 
 ---
 
@@ -264,7 +268,7 @@ The configuration is stored in INI format under the `[ai]` section and it's comp
 [ai]
 endpoint = "https://openrouter.ai/api/v1/chat/completions"
 apikey = "sk-or-v1-xxxxxxxxxxxxxxxxxxxxx"
-model = "deepseek/deepseek-chat-v3.1:free"
+model = "x-ai/grok-4.1-fast:free"
 custom_instructions = "0"
 enable_debug = "0"
 ```
@@ -273,13 +277,13 @@ enable_debug = "0"
 
 ## Example Configurations
 
-### Example 1: OpenRouter with DeepSeek (Recommended for Beginners)
+### Example 1: OpenRouter with X/Grok 4.1 Fast (Recommended for Beginners)
 
 ```ini
 [ai]
 endpoint = "https://openrouter.ai/api/v1/chat/completions"
 apikey = "sk-or-v1-xxxxxxxxxxxxxxxxxxxxx"
-model = "deepseek/deepseek-chat-v3.1:free"
+model = "x-ai/grok-4.1-fast:free"
 custom_instructions = "0"
 enable_debug = "0"
 ```
@@ -292,6 +296,6 @@ endpoint = "https://openrouter.ai/api/v1/chat/completions"
 apikey = "sk-or-v1-xxxxxxxxxxxxxxxxxxxxx"
 model = "openai/gpt-oss-20b:free"
 custom_instructions = "1"
-custom_instructions_content = "You are a troubleshooting expert for our e-commerce platform..."
+custom_instructions_content = "You are an expert troubleshooting assistant for our company's Icinga monitoring system."
 enable_debug = "1"
 ```
