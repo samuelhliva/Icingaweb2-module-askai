@@ -18,7 +18,7 @@ class AskaiConfigForm extends ConfigForm
     /**
      * Initialize the form
      */
-    public function init()
+    public function init(): void
     {
         $this->setName('askai_config');
         $this->setSubmitLabel($this->translate('Save Changes'));
@@ -29,7 +29,7 @@ class AskaiConfigForm extends ConfigForm
      * 
      * @param array $formData Current form data for conditional fields
      */
-    public function createElements(array $formData)
+    public function createElements(array $formData): void
     {
         $this->addElement('text', 'ai_endpoint', [
             'label'         => $this->translate('API Endpoint'),

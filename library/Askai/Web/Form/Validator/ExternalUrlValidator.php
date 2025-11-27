@@ -29,7 +29,7 @@ class ExternalUrlValidator extends Zend_Validate_Abstract
      *
      * @see     Zend_Validate_Abstract::isValid()
      */
-    public function isValid($value)
+    public function isValid($value): mixed
     {
         // Remove all illegal characters from a url
         $url = filter_var($value, FILTER_SANITIZE_URL);
