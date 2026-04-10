@@ -38,11 +38,6 @@ OpenRouter provides free access to multiple AI models. To get started:
 4. Generate a new API key
 5. Copy the API key (you'll need this for configuration)
 
-**Free Models Available:**
-- X/Grok 4.1 Fast
-- OpenAI/GPT-OSS 20b
-- TNG/R1T Chimera
-
 ### Other ChatGPT-Compatible APIs
 
 The module supports any ChatGPT-compatible API endpoint that accepts the following request format:
@@ -136,20 +131,7 @@ Your authentication key for the AI API.
 **Type:** Dropdown selection
 
 Select which AI model to use for generating troubleshooting suggestions.
-
-**Available Models (OpenRouter):**
-
-| Model | Description | Best For |
-|-------|-------------|----------|
-| `x-ai/grok-4.1-fast:free` | X/Grok 4.1 Fast | Fast, real-time troubleshooting with minimal latency |
-| `openai/gpt-oss-20b:free` | OpenAI/GPT-OSS 20b | Detailed, thorough analysis and complex scenarios |
-| `tngtech/tng-r1t-chimera:free` | TNG/R1T Chimera | Balanced performance for general troubleshooting |
-
-
-**Choosing a Model:**
-- **For most users:** Start with X/Grok 4.1 Fast (good balance of speed and quality)
-- **For detailed analysis:** Use OpenAI/GPT-OSS 20b
-- **For cost-conscious environments:** Use TNG/R1T Chimera
+Please, be aware available free models are a subject to change. I strongly suggest selecting a custom model based on your needs.
 
 **Custom Model**
 A new feature has been introduced: choosing your own model. In order to choose one, choose the last option in the list: `Custom Model`. A new text input will be revealed where the name of a model is expected.
