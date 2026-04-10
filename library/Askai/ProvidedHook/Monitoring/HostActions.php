@@ -11,7 +11,7 @@ use Icinga\Web\Session;
 
 class HostActions extends HostActionsHook
 {
-    public function getActionsForHost(MonitoredObject $host): array
+    public function getActionsForHost(MonitoredObject $host)
     {
         try {
             return $this->getThem($host);
@@ -23,7 +23,7 @@ class HostActions extends HostActionsHook
     /**
      * Get the Host Actions with 'Troubleshoot with AI'
      */
-    protected function getThem(MonitoredObject $host): array
+    protected function getThem(MonitoredObject $host)
     {
         $actions = array();
         $host->fetch();
@@ -42,6 +42,7 @@ class HostActions extends HostActionsHook
             'host_in_downtime'              => $host->host_in_downtime,
             'host_notifications_enabled'    => $host->host_notifications_enabled,
             'host_is_reachable'             => $host->host_is_reachable,
+            'host_os'                       => $host->_host_host_os,
             
             'check_command'                 => $host->host_check_command
         ];

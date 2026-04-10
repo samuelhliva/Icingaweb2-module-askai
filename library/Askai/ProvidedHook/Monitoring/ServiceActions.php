@@ -11,7 +11,7 @@ use Icinga\Web\Session;
 
 class ServiceActions extends ServiceActionsHook
 {
-    public function getActionsForService(MonitoredObject $service): array
+    public function getActionsForService(MonitoredObject $service)
     {
         try {
             return $this->getThem($service);
@@ -23,7 +23,7 @@ class ServiceActions extends ServiceActionsHook
     /**
      * Get the Service Actions with 'Troubleshoot with AI'
      */
-    protected function getThem(MonitoredObject $service): array
+    protected function getThem(MonitoredObject $service)
     {
         $actions = array();
         $service->fetch();
@@ -38,6 +38,7 @@ class ServiceActions extends ServiceActionsHook
             'host_acknowledged'             => $service->host_acknowledged,
             'host_in_downtime'              => $service->host_in_downtime,
             'host_notifications_enabled'    => $service->host_notifications_enabled,
+            'host_os'                       => $service->_host_host_os,
 
             'service_acknowledged'          => $service->service_acknowledged,
             'service_check_source'          => $service->service_check_source,
